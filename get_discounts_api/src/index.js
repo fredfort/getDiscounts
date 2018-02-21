@@ -8,11 +8,11 @@ const Auth = require('./auth/auth');
 const productRoutes = require('./product/product-routes');
 const userRoutes = require('./user/user-routes');
 
-app.set('port',process.env.PORT || 3000);
+app.set('port', process.env.PORT || 3000);
 const auth = new Auth();
 
 //DATABASE CONNECTION 
-var uri = "mongodb://localhost:27017";
+var uri = "mongodb://mongo:27017";
 mongoose.connect(uri + "/getDiscounts");
 var db = mongoose.connection;
 db.on('error', () =>  console.log("Mongodb connection error"))
@@ -34,6 +34,10 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 // ROUTES
 app.use('/product', auth.verifyToken, productRoutes);
 app.use('/user', userRoutes);
+
+app.get('/', (req, res) => {
+  res.send('API works\n');
+});
 
 
 
